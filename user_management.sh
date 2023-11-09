@@ -1,14 +1,17 @@
 #!/bin/bash
 
+#function to  Check if the username exists
+
 function check_user()
 {
 	check="$(compgen -u | grep "$User" | awk '$User {print "true"}')"
 };
 
+# Function to create a new user account
+
 function create_user()
 {
-	echo "Enter New User Name:"
-	read User
+	read -p "Enter New User Name:" User
 	check_user $User
 	if [[ $check = "true" ]]
 	then
@@ -22,10 +25,11 @@ function create_user()
 	fi
 };
 
+# Function to delete an existing user account
+
 function delete_user()
 {
-	echo "Enter User Name to Delete:"
-        read User
+	read -p "Enter User Name to Delete:" User
         check_user $User
         if [[ $check = "true" ]]
         then
@@ -39,10 +43,11 @@ function delete_user()
         fi
 };
 
+# Function to reset the password for an existing user account
+
 function reset_password()
 {
-        echo "Enter The User Name to Reset Password:" 
-        read User
+        read -p "Enter The User Name to Reset Password:" User
         check_user $User
         if [[ $check = "true" ]]
         then
@@ -56,14 +61,15 @@ function reset_password()
         fi
 };
 
+# Function to list all user accounts on the system
 function list_users()
 {
 	echo "User Accounts on The System"
 
 	awk -F: '{print NR, $1,"( UID: ",$3,")"}' /etc/passwd
 };
-	
-
+# Command-line argument parsing	checking
+# to display usage information and available options
 if [ -z $1 ] || [ $1 = -h ] || [ $1 = --help ]
 then
 	echo "Usage: ./user_management.sh [OPTIONS]
